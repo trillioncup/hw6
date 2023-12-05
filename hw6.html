@@ -1,0 +1,235 @@
+<!-- Styles -->
+<style>
+#chartdiv {
+  width: 100%;
+  height: 600px;
+}
+</style>
+
+<!-- Resources -->
+<script src="https://cdn.amcharts.com/lib/4/core.js"></script>
+<script src="https://cdn.amcharts.com/lib/4/charts.js"></script>
+<script src="https://cdn.amcharts.com/lib/4/plugins/timeline.js"></script>
+<script src="https://cdn.amcharts.com/lib/4/themes/animated.js"></script>
+
+<!-- Chart code -->
+<script>
+am4core.ready(function() {
+
+// Themes begin
+am4core.useTheme(am4themes_animated);
+// Themes end
+
+var chart = am4core.create("chartdiv", am4plugins_timeline.CurveChart);
+chart.curveContainer.padding(0, 100, 0, 120);
+chart.maskBullets = false;
+
+var colorSet = new am4core.ColorSet();
+
+chart.data = 
+[
+  {
+    "category": "",
+    "year": "1960",
+    "size": 13,
+    "text": "1960年成立台灣觀光協會",
+    "desc":我國觀光事業萌芽於1956年台灣省政府設立「台灣省觀光事業委員會」，並輔導民間成立的「台灣觀光協會」，為最早成立的官方及民間觀光組織。為積極發展觀光，交通部於1960年成立「觀光事業小組」為觀光局建制之始，負責觀光事業法規、重要計畫，督導及宣傳觀光事業，並研訂完成「觀光事業四年計畫」。
+  }, 
+  {
+    "category": "",
+    "year": "1963",
+    "size": 5,
+    "text": "1963年圓山大飯店完工",
+    "desc":1963年4月，第一個推廣台灣觀光的廣告在美國《紐約時報》刊登。
+1963年圓山大飯店完成飯店基礎設施；1967年獲美國財星雜誌評為世界十大飯店。
+
+  },
+  {
+    "category": "",
+    "year": "1965",
+    "size": 9,
+    "text": "1965年國立故宮博物院成立",
+    "desc":1965年11月，國立故宮博物院台北外雙溪新館落成啟用，典藏65萬件無價中華藝術寶藏。之後於2001年籌建故宮南部院區，並於2015年開館營運。
+  }, 
+  {
+    "category": "",
+    "year": "1967",
+    "size": 12,
+    "text": "1967年兒童育樂中心開幕",
+    "desc":台北圓山市立兒童育樂中心開幕，為全台最早且唯一之公辦兒童樂園。同時，全台第一家民營遊樂園雲仙樂園開幕。
+  }, 
+  {
+    "category": "",
+    "year": "1969",
+    "size": 3,
+    "text": "1969年制定發展觀光條例",
+    "desc":1969年7月，制定「發展觀光條例」，確立觀光事業發展與管理的法源依據。
+  }, 
+  {
+    "category": "",
+    "year": "1970",
+    "size": 9,
+    "text": "1970年第一個駐外辦事處—舊金山辦事處成立",
+    "desc":1970年成立第一個駐外辦事處「舊金山辦事處」，之後陸續成立東京、法蘭克福等駐外辦事處。
+  }, 
+  {
+    "category": "",
+    "year": "1975",
+    "size": 4,
+    "text": "1975年興建風景區國民旅舍",
+    "desc":1975年11月，訂定「風景區國民旅舍暨遊樂設施輔導管理辦法」，出租公有土地並補助相關單位興建國民旅舍，計有台大實驗林溪頭國民旅舍、烏山頭國民旅舍、日月潭青年活動中心等最具代表。
+  }, 
+  {
+    "category": "",
+    "year": "1981",
+    "size": 3,
+    "text": "1981年設立觀光局旅遊服務中心",
+    "desc":1981年7月，觀光局於松山機場設立第一個以出國旅遊服務為目的之「旅遊服務中心」。
+  }, 
+  {
+    "category": "",
+    "size": 10,
+    "year": "1987",
+    "text": "1987年7月，政府解除戒嚴；11月2日，開放國人赴大陸探親。",
+    "desc":1987年5月，台北饒河街觀光夜市開幕；10月，擁有40年歷史的華西街夜市整建後再以觀光夜市之姿重新出發。各地夜市群起效尤，在地特色夜市也發展為台灣重要觀光資源。
+1987年7月，政府解除戒嚴；11月2日，開放國人赴大陸探親。
+1987年12月，舉辦第一屆「台北國際旅展（ITF）」，為全球旅遊業重要行銷平台。
+
+  }
+];
+
+chart.dateFormatter.inputDateFormat = "yyyy";
+
+chart.fontSize = 15;
+chart.tooltipContainer.fontSize = 11;
+
+var categoryAxis = chart.yAxes.push(new am4charts.CategoryAxis());
+categoryAxis.dataFields.category = "category";
+categoryAxis.renderer.grid.template.disabled = true;
+
+var dateAxis = chart.xAxes.push(new am4charts.DateAxis());
+dateAxis.renderer.points = [{ x: -400, y: 0 }, { x: 0, y: 50 }, { x: 400, y: 0 }]
+dateAxis.renderer.polyspline.tensionX = 0.8;
+dateAxis.renderer.grid.template.disabled = true;
+dateAxis.renderer.line.strokeDasharray = "1,4";
+dateAxis.baseInterval = {period:"day", count:1}; // otherwise initial animation will be not smooth
+
+dateAxis.renderer.labels.template.disabled = true;
+
+var series = chart.series.push(new am4plugins_timeline.CurveLineSeries());
+series.strokeOpacity = 0;
+series.dataFields.dateX = "year";
+series.dataFields.categoryY = "category";
+series.dataFields.value = "size";
+series.baseAxis = categoryAxis;
+
+var interfaceColors = new am4core.InterfaceColorSet();
+
+series.tooltip.pointerOrientation = "down";
+
+var distance = 100;
+var angle = 60;
+
+var bullet = series.bullets.push(new am4charts.Bullet());
+
+var line = bullet.createChild(am4core.Line);
+line.adapter.add("stroke", function(fill, target) {
+  if (target.dataItem) {
+    return chart.colors.getIndex(target.dataItem.index)
+  }
+});
+
+line.x1 = 0;
+line.y1 = 0;
+line.y2 = 0;
+line.x2 = distance - 10;
+line.strokeDasharray = "1,3";
+
+var circle = bullet.createChild(am4core.Circle);
+circle.radius = 30;
+circle.fillOpacity = 1;
+circle.strokeOpacity = 0;
+
+var circleHoverState = circle.states.create("hover");
+circleHoverState.properties.scale = 1.3;
+
+series.heatRules.push({ target: circle, min: 20, max: 50, property: "radius" });
+circle.adapter.add("fill", function(fill, target) {
+  if (target.dataItem) {
+    return chart.colors.getIndex(target.dataItem.index)
+  }
+});
+circle.tooltipText = "{text}:\n\n {desc}";
+circle.adapter.add("tooltipY", function(tooltipY, target){
+  return -target.pixelRadius - 4;
+});
+
+var yearLabel = bullet.createChild(am4core.Label);
+yearLabel.text = "{year}";
+yearLabel.strokeOpacity = 0;
+yearLabel.fill = am4core.color("#fff");
+yearLabel.horizontalCenter = "middle";
+yearLabel.verticalCenter = "middle";
+yearLabel.interactionsEnabled = false;
+
+var label = bullet.createChild(am4core.Label);
+label.propertyFields.text = "text";
+label.strokeOpacity = 0;
+label.horizontalCenter = "right";
+label.verticalCenter = "middle";
+
+label.adapter.add("opacity", function(opacity, target) {
+  if(target.dataItem){
+    var index = target.dataItem.index;
+    var line = target.parent.children.getIndex(0);
+
+    if (index % 2 == 0) {
+      target.y = -distance * am4core.math.sin(-angle);
+      target.x = -distance * am4core.math.cos(-angle);
+      line.rotation = -angle - 180;
+      target.rotation = -angle;
+    }
+    else {
+      target.y = -distance * am4core.math.sin(angle);
+      target.x = -distance * am4core.math.cos(angle);
+      line.rotation = angle - 180;
+      target.rotation = angle;
+    }
+  }
+  return 1;
+});
+
+var outerCircle = bullet.createChild(am4core.Circle);
+outerCircle.radius = 30;
+outerCircle.fillOpacity = 0;
+outerCircle.strokeOpacity = 0;
+outerCircle.strokeDasharray = "1,3";
+
+var hoverState = outerCircle.states.create("hover");
+hoverState.properties.strokeOpacity = 0.8;
+hoverState.properties.scale = 1.5;
+
+outerCircle.events.on("over", function(event){
+  var circle = event.target.parent.children.getIndex(1);
+  circle.isHover = true;
+  event.target.stroke = circle.fill;
+  event.target.radius = circle.pixelRadius;
+  event.target.animate({property: "rotation", from: 0, to: 360}, 4000, am4core.ease.sinInOut);
+});
+
+outerCircle.events.on("out", function(event){
+  var circle = event.target.parent.children.getIndex(1);
+  circle.isHover = false;
+});
+
+chart.scrollbarX = new am4core.Scrollbar();
+chart.scrollbarX.opacity = 0.5;
+chart.scrollbarX.width = am4core.percent(50);
+chart.scrollbarX.align = "center";
+
+}); // end am4core.ready()
+</script>
+
+<!-- HTML -->
+<div id="chartdiv"></div>
+amCharts
